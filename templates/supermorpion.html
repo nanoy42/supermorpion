@@ -1,0 +1,182 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Game - SuperMorpion{% endblock %}
+{% block content %}
+{% csrf_token %}
+<center>
+    <h1>Supermorpion</h1>
+    <h2>You are the {% if player == 1 %}X{% else %}O{% endif %} player</h2>
+    {% if finished %}
+    {% if player == game_owner %}
+    <h3 id="player-help">You won</h3>
+    {% else %}
+    <h3 id="player-help">{% if player == 1 %}O{% else %}X{% endif %} player won</h3>
+    {% endif %}
+    {% else %}
+    {% if player == next_player %}
+    <h3 id="player-help">You play in {{next_case}}</h3>
+    {% else %}
+    <h3 id="player-help">{% if player == 1 %}O{% else %}X{% endif %} player plays in {{next_case}}</h3>
+    {% endif %}
+    {% endif %}
+    <h3 id="error" class="error"></h3>
+    <table>
+        {% for line in lines %}
+        <tr {% if forloop.counter|divisibleby:3 %}class="space-down" {% endif %}>
+            {% for elem in line %}
+            <td {% if forloop.counter|divisibleby:3 %}class="space-right" {% endif %}}>
+                <button id="{{forloop.parentloop.counter0}}{{forloop.counter0}}" class="case btn morpion-btn"
+                    data-line="{{forloop.parentloop.counter0}}"
+                    data-elem="{{forloop.counter0}}">{% if elem == 1 %}X{% elif elem == 2 %}O{% endif %}</button>
+            </td>
+            {% endfor %}
+        </tr>
+        {% endfor %}
+    </table>
+
+    {% if finished %}
+    <h3 id="other">Game is finished. <a href="{% url 'core:home' %}">Home</a>.</h3>
+    {% else %}
+    <h3 id="other"></h3>
+    {% endif %}
+</center>
+{% endblock %}
+{% block extrascript %}
+<script>
+    let player = {{ player }};
+    let player_letter = {% if player == 1 %}"X"{% else %} "O"{% endif %};
+    let other_player_letter = {% if player == 1 %}"O"{% else %} "X"{% endif %};
+    let uuid = "{{uuid}}";
+    let id = {{ id }};
+    let last_big_case = {{ last_big_case }};
+    let last_line_case = {{ last_line_case }};
+    let last_case = {{ last_case }};
+    let inactive_cases = [];
+    {% for elem in inactive_cases %}
+    inactive_cases.push({{ elem }});
+    {% endfor %}
+    end_message = "Game is finished. <a href=\"{% url 'core:home' %}\">Home</a>.";
+</script>
+<script>
+
+    function lines_to_blocks(line, elem) {
+        let offset = 0;
+        if (line >= 6) {
+            offset = 2
+        } else if (line >= 3) {
+            offset = 1
+        }
+
+        let offset2 = 0;
+        if (elem >= 6) {
+            offset2 = 2;
+        } else if (elem >= 3) {
+            offset2 = 1;
+        }
+
+        let big_case = 3 * offset + offset2;
+        let line_case = line - 3 * offset;
+        let elem_case = elem - 3 * offset2;
+        return [big_case, line_case, elem_case];
+    }
+
+    function blocks_to_id(big_case, line_case, elem_case) {
+        let offset = 0;
+        if (big_case >= 6) {
+            offset = 2
+        } else if (big_case >= 3) {
+            offset = 1
+        }
+
+        line = line_case + 3 * offset;
+        elem = elem_case + 3 * (big_case % 3);
+        return line.toString() + elem.toString();
+    }
+
+    function block_block(big_case) {
+        for (var i = 0; i < 3; i++) {
+            for (var j = 0; j < 3; j++) {
+                $("#" + blocks_to_id(big_case, i, j)).addClass("inactive");
+            }
+        }
+    }
+
+    $(document).ready(function () {
+        var case_html = $("#" + blocks_to_id(last_big_case, last_line_case, last_case));
+        case_html.addClass("active");
+
+        for (index = 0; index < inactive_cases.length; index++) {
+            block_block(inactive_cases[index]);
+        }
+
+        var chatSocket = new WebSocket(
+            'ws://' + window.location.host +
+            '/ws/play-move/' + id);
+
+        chatSocket.onmessage = function (e) {
+            var data = JSON.parse(e.data);
+            if (data["type"] == "response") {
+                if (data["success"]) {
+                    $(".active").removeClass("active");
+                    $("#player-help").html(other_player_letter + " player plays in " + data["next_case"]);
+                    $("#error").html("");
+                    case_html.html(player_letter);
+                    case_html.addClass("active");
+                    case_html.removeClass("hovering");
+                } else {
+                    $("#error").html(data["msg"]);
+                }
+            } else if (data["type"] == "announce") {
+                if (data["next_player"] == player) {
+                    $("#player-help").html("You play in " + data["next_case"]);
+                    $("#error").html("");
+                    case_html = $("#" + blocks_to_id(data["big_case"], data["line_case"], data["case"]));
+                    $(".active").removeClass("active");
+                    case_html.html(other_player_letter);
+                    case_html.addClass("active");
+                    case_html.removeClass("hovering");
+                }
+            } else if (data["type"] == "block") {
+                block_block(data["big_case"]);
+            } else if (data["type"] == "finished") {
+                for (var i = 0; i < 9; i++) {
+                    block_block(i);
+                }
+                $("#other").html(end_message);
+                if (data["player"] == player) {
+                    $("#player-help").html("You won");
+                } else {
+                    $("#player-help").html(other_player_letter + " player won");
+                }
+            } else {
+                console.error("Unknown message");
+            }
+        };
+
+        chatSocket.onclose = function (e) {
+            $("#other").html('Connection to server lost. <a href="">Reload</a>');
+        };
+
+        $(".case").hover(function () {
+            if ($(this).html() == "" && !$(this).hasClass("inactive")) {
+                $(this).html(player_letter);
+                $(this).addClass("hovering");
+            }
+        }, function () {
+            if ($(this).hasClass("hovering")) {
+                $(this).html("");
+                $(this).removeClass("hovering");
+            }
+        });
+        $(".case").click(function () {
+            var line = $(this).attr("data-line");
+            var elem = $(this).attr("data-elem");
+            var blocks = lines_to_blocks(line, elem);
+            case_html = $(this);
+            chatSocket.send(JSON.stringify({
+                "big_case": blocks[0], "line_case": blocks[1], "case": blocks[2], "id": id, "uuid": uuid
+            }));
+        });
+    });
+</script>
+{% endblock %}

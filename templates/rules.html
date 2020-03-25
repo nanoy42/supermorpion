@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+{% block content %}
+<center>
+    <h1>SuperMorpion</h1>
+    <p>The game is composed by 91 cases. Each block of 9 cases, from now on reffered as a big case, is a classic
+        tic-tac-toe. The group of the 9 big cases is itself a tic-tac-toe.</p>
+    <p>In order to win, the player must complete a line of 3 big cases (horizontally, vertically or diagonally). In
+        order to win a big case, a player must complete a line of 3 cases (horizontally, vertically or diagonally)
+        inside the big case.</p>
+    <p>The X player plays first. He must play in the central big case. Then the O player must play in the big case
+        corresponding to the small case X has played (eg if X plays in the middle-left case of the central big case,
+        them the O player must play in te middle-left big case). A player cannot play in a complete big case, so in the
+        case the player should play in such a big case, he can play in any big case.</p>
+    <button class="btn big-btn" onclick="location.href='{% url 'core:home' %}'">Home</button>
+</center>
+{% endblock %}

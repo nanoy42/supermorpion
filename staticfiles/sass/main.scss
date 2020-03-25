@@ -1,0 +1,107 @@
+@import 'variables';
+
+body {
+    background-color: $background-color;
+    text-align: center;
+    color: $text-color;
+    font-family: 'Open Sans', sans-serif;
+}
+
+.footer a{
+    color:white;
+}
+
+.btn {
+    background-color: $active-color;
+    font-weight: bold;
+    border: none;
+    border-radius: 5px;
+    outline: none;
+    -webkit-transition-duration: $transition-time;
+    -moz-transition-duration: $transition-time;
+    -o-transition-duration: $transition-time;
+    transition-duration: $transition-time;
+}
+
+.morpion-btn{
+    width: $size;
+    height: $size;
+}
+
+.btn:hover {
+    background-color: $active-hover-color;
+    cursor: pointer;
+    outline: none;
+    color: white;
+}
+
+.btn,
+.btn:active,
+.btn:focus {
+    outline: none;
+}
+
+.btn::-moz-focus-inner {
+    border: 0;
+}
+
+.big-btn {
+    min-width: 150px;
+    min-height: 50px;
+    padding-left: 15px;
+    padding-right: 15px;
+}
+
+.active {
+    background-color: $active-hover-color;
+    color: white;
+}
+
+.space-right {
+    padding-right: 15px;
+}
+
+.space-down>td {
+    padding-bottom: 15px;
+}
+
+.error {
+    color: $error-color;
+}
+
+.inactive {
+    background-color: $inactive-color;
+    color: white;
+}
+
+.footer {
+  position: fixed;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  background-color: $active-color;
+  color: white;
+}
+
+.container a{
+    outline: none;
+    color: $active-color;
+    -webkit-transition-duration: $transition-time;
+    -moz-transition-duration: $transition-time;
+    -o-transition-duration: $transition-time;
+    transition-duration: $transition-time;
+}
+
+.container a:hover{
+    color: $active-hover-color;
+}
+
+.footer-left{
+    float: left;
+    padding-left:30px;
+}
+
+.footer-right{
+    float: right;
+    padding-right:30px;
+}

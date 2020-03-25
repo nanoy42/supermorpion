@@ -1,0 +1,89 @@
+body {
+  background-color: #F4F3F3;
+  text-align: center;
+  color: #7F8494;
+  font-family: 'Open Sans', sans-serif; }
+
+.footer a {
+  color: white; }
+
+.btn {
+  background-color: #1998CF;
+  font-weight: bold;
+  border: none;
+  border-radius: 5px;
+  outline: none;
+  -webkit-transition-duration: 250ms;
+  -moz-transition-duration: 250ms;
+  -o-transition-duration: 250ms;
+  transition-duration: 250ms; }
+
+.morpion-btn {
+  width: 50px;
+  height: 50px; }
+
+.btn:hover {
+  background-color: #354A6C;
+  cursor: pointer;
+  outline: none;
+  color: white; }
+
+.btn,
+.btn:active,
+.btn:focus {
+  outline: none; }
+
+.btn::-moz-focus-inner {
+  border: 0; }
+
+.big-btn {
+  min-width: 150px;
+  min-height: 50px;
+  padding-left: 15px;
+  padding-right: 15px; }
+
+.active {
+  background-color: #354A6C;
+  color: white; }
+
+.space-right {
+  padding-right: 15px; }
+
+.space-down > td {
+  padding-bottom: 15px; }
+
+.error {
+  color: #FF0000; }
+
+.inactive {
+  background-color: #000000;
+  color: white; }
+
+.footer {
+  position: fixed;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  background-color: #1998CF;
+  color: white; }
+
+.container a {
+  outline: none;
+  color: #1998CF;
+  -webkit-transition-duration: 250ms;
+  -moz-transition-duration: 250ms;
+  -o-transition-duration: 250ms;
+  transition-duration: 250ms; }
+
+.container a:hover {
+  color: #354A6C; }
+
+.footer-left {
+  float: left;
+  padding-left: 30px; }
+
+.footer-right {
+  float: right;
+  padding-right: 30px; }
+
+/*# sourceMappingURL=main.css.map */

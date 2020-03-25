@@ -1,0 +1,29 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>{% block title %}SuperMorpion{% endblock %}</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="{% static 'css/main.css' %}" rel="stylesheet">
+</head>
+
+<body>
+    <div class="container">
+        {% block content %}{% endblock %}
+    </div>
+
+    <div class="footer">
+        <p class="footer-left"><a href="{% url 'core:home' %}">Home</a></p>
+        <p class="footer-left"><a href="{% url 'core:credits' %}">Credits</a></p>
+        <p class="footer-left"><a href="{% url 'core:legals' %}">Legals</a></p>
+        <p class="footer-right"><a href="https://github.com/nanoy42/supermorpion">Github</a></p>
+        <p class="footer-right">Made with ❤ by Nanoy</p>
+    </div>
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"
+        integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+    {% block extrascript %}{% endblock %}
+</body>
+
+</html>

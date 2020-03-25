@@ -1,0 +1,11 @@
+{% extends 'base.html' %}
+{% block content %}
+<center>
+    <h1>SuperMorpion</h1>
+    <p>Welcome on SuperMorpion online game. SuperMorpion is a bigger (and more interesting) version of the tic tac toe.
+    </p>
+    <button class="btn big-btn" onclick="location.href='{% url 'core:new-game' %}'">New game</button>
+    <button class="btn big-btn" onclick="location.href='{% url 'core:rules' %}'">Rules</button>
+    <button class="btn big-btn" onclick="location.href='{% url 'core:credits' %}'">Credits</button>
+</center>
+{% endblock %}

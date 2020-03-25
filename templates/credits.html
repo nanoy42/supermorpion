@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+{% block title %}Credits - SuperMorpion{% endblock %}
+{% block content %}
+<center>
+    <h1>SuperMorpion</h1>
+    <p>This game was made with ❤ by Nanoy</p>
+    <p>You can find the source code on github : <a
+            href="https://github.com/nanoy42/supermorpion">https://github.com/nanoy42/supermorpion</a></p>
+    <p>The code is distributed under the GNU General Public License v3</p>
+    <button class="btn big-btn" onclick="location.href='{% url 'core:home' %}'">Home</button>
+</center>
+{% endblock %}
