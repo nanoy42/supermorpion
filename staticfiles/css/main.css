@@ -18,11 +18,17 @@ body {
   -o-transition-duration: 250ms;
   transition-duration: 250ms; }
 
+.block-inactive {
+  background-color: grey; }
+
+.block-active {
+  background-color: #1998CF; }
+
 .morpion-btn {
   width: 50px;
   height: 50px; }
 
-.btn:hover {
+.block-active:hover, .big-btn:hover {
   background-color: #354A6C;
   cursor: pointer;
   outline: none;

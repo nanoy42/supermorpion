@@ -50,6 +50,7 @@ def supermorpion(request, uuid):
             "last_case": game.last_case,
             "finished": game.game_finished(),
             "game_owner": game.game_owner(),
+            "next_big_case": game.case_to_big_case(),
         },
     )
 

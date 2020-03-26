@@ -53,6 +53,7 @@ class SupermorpionConsumer(WebsocketConsumer):
                             "big_case": big_case,
                             "line_case": line_case,
                             "case": case,
+                            "next_big_case": game.case_to_big_case(),
                         }
                     ),
                 },

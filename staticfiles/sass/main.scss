@@ -23,12 +23,20 @@ body {
     transition-duration: $transition-time;
 }
 
+.block-inactive {
+    background-color: grey;
+}
+
+.block-active {
+    background-color: $active-color;
+}
+
 .morpion-btn{
     width: $size;
     height: $size;
 }
 
-.btn:hover {
+.block-active:hover, .big-btn:hover {
     background-color: $active-hover-color;
     cursor: pointer;
     outline: none;

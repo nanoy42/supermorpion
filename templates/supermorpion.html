@@ -24,7 +24,7 @@
         {% for line in lines %}
         <tr {% if forloop.counter|divisibleby:3 %}class="space-down" {% endif %}>
             {% for elem in line %}
-            <td {% if forloop.counter|divisibleby:3 %}class="space-right" {% endif %}}>
+            <td {% if forloop.counter|divisibleby:3 %}class="space-right" {% endif %}>
                 <button id="{{forloop.parentloop.counter0}}{{forloop.counter0}}" class="case btn morpion-btn"
                     data-line="{{forloop.parentloop.counter0}}"
                     data-elem="{{forloop.counter0}}">{% if elem == 1 %}X{% elif elem == 2 %}O{% endif %}</button>
@@ -51,7 +51,9 @@
     let last_big_case = {{ last_big_case }};
     let last_line_case = {{ last_line_case }};
     let last_case = {{ last_case }};
+    let next_player = {{ next_player }};
     let inactive_cases = [];
+    let next_big_case = {{ next_big_case }};
     {% for elem in inactive_cases %}
     inactive_cases.push({{ elem }});
     {% endfor %}
@@ -101,9 +103,32 @@
         }
     }
 
+    function active_block(big_case) {
+        $(".case").removeClass("block-active");
+        $(".case").addClass("block-inactive");
+        for (var i = 0; i < 3; i++) {
+            for (var j = 0; j < 3; j++) {
+                $("#" + blocks_to_id(big_case, i, j)).removeClass("block-inactive");
+                $("#" + blocks_to_id(big_case, i, j)).addClass("block-active");
+            }
+        }
+    }
+
     $(document).ready(function () {
         var case_html = $("#" + blocks_to_id(last_big_case, last_line_case, last_case));
         case_html.addClass("active");
+        if (player == next_player) {
+            if (next_big_case == -1) {
+                active_block(4);
+            } else if (next_big_case == -2) {
+                $(".case").addClass("block-active");
+                $(".case").removeClass("block-inactive");
+            } else {
+                active_block(next_big_case);
+            }
+        } else {
+            $(".case").addClass("block-inactive");
+        }
 
         for (index = 0; index < inactive_cases.length; index++) {
             block_block(inactive_cases[index]);
@@ -117,6 +142,8 @@
             var data = JSON.parse(e.data);
             if (data["type"] == "response") {
                 if (data["success"]) {
+                    $(".case").removeClass("block-active");
+                    $(".case").addClass("block-inactive");
                     $(".active").removeClass("active");
                     $("#player-help").html(other_player_letter + " player plays in " + data["next_case"]);
                     $("#error").html("");
@@ -130,6 +157,13 @@
                 if (data["next_player"] == player) {
                     $("#player-help").html("You play in " + data["next_case"]);
                     $("#error").html("");
+                    console.log(data["next_big_case"]);
+                    if (data["next_big_case"] == -2) {
+                        $(".case").addClass("block-active");
+                        $(".case").removeClass("block-inactive");
+                    } else {
+                        active_block(data["next_big_case"]);
+                    }
                     case_html = $("#" + blocks_to_id(data["big_case"], data["line_case"], data["case"]));
                     $(".active").removeClass("active");
                     case_html.html(other_player_letter);
@@ -158,7 +192,7 @@
         };
 
         $(".case").hover(function () {
-            if ($(this).html() == "" && !$(this).hasClass("inactive")) {
+            if ($(this).html() == "" && !$(this).hasClass("inactive") && !$(this).hasClass("block-inactive")) {
                 $(this).html(player_letter);
                 $(this).addClass("hovering");
             }
