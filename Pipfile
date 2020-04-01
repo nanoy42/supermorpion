@@ -4,8 +4,20 @@ url = "https://pypi.org/simple"
 verify_ssl = true
 
 [dev-packages]
+isort = "*"
+black = "*"
+pylint = "*"
+pylint-django = "*"
+rope = "*"
+django-debug-toolbar = "*"
 
 [packages]
+channels = "*"
+channels-redis = "*"
+django = "*"
 
 [requires]
 python_version = "3.8"
+
+[pipenv]
+allow_prereleases = true

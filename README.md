@@ -22,7 +22,12 @@ git clone https://github.com/nanoy42/supermorpion
 Then install the python dependencies:
 
 ```
-pip3 install -r requirements.txt
+pipenv install --ignore-pipfile
+```
+
+You can install the dev dependencies with :
+```
+pipenv install --dev --pre
 ```
 
 Finally copy the final settings example file :
